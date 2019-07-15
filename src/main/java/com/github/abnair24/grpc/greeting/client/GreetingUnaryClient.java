@@ -8,7 +8,7 @@ import com.proto.sample.SampleServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
-public class GreetingClient {
+public class GreetingUnaryClient {
 
     public static void main(String[] args) {
         System.out.println("Starting client ");

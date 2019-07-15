@@ -1,10 +1,6 @@
 package com.github.abnair24.grpc.greeting.server;
 
-import com.proto.greet.Greet.*;
-import com.proto.greet.GreetRequest;
-import com.proto.greet.GreetResponse;
-import com.proto.greet.GreetServiceGrpc;
-import com.proto.greet.Greeting;
+import com.proto.greet.*;
 import io.grpc.stub.StreamObserver;
 
 public class GreetServiceImpl extends GreetServiceGrpc.GreetServiceImplBase {
@@ -23,5 +19,29 @@ public class GreetServiceImpl extends GreetServiceGrpc.GreetServiceImplBase {
         responseObserver.onNext(response);
 
         responseObserver.onCompleted();
+    }
+
+    @Override
+    public void greetManyTimes(GreetManyTimesRequest request, StreamObserver<GreetManyTimesResponse> responseObserver) {
+
+        String firstName = request.getGreeting().getFirstName();
+
+        try {
+            for(int i = 0; i<= 10; i++ ) {
+                String result = "Hello " + firstName + " - " + i;
+
+                GreetManyTimesResponse response = GreetManyTimesResponse.newBuilder()
+                        .setResult(result)
+                        .build();
+
+                responseObserver.onNext(response);
+                Thread.sleep(1000);
+            }
+        }catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }finally {
+            responseObserver.onCompleted();
+        }
+
     }
 }
