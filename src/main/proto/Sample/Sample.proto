@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package sampleGrpc;
+
+option java_package = "com.proto.sample";
+
+message SampleMessage {}
+
+service SampleService {}

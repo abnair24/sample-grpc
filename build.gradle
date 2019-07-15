@@ -1,0 +1,71 @@
+
+apply plugin: 'java'
+apply plugin: 'com.google.protobuf'
+apply plugin: 'idea'
+
+group 'com.github.abnair24.sample-grpc'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.10'
+    }
+}
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.8.0"
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.22.1"
+        }
+    }
+    generateProtoTasks {
+        ofSourceSet('main')*.plugins {
+            // Apply the "grpc" plugin whose spec is defined above, without
+            // options.  Note the braces cannot be omitted, otherwise the
+            // plugin will not be added. This is because of the implicit way
+            // NamedDomainObjectContainer binds the methods.
+            grpc { }
+        }
+    }
+    generatedFilesBaseDir = "$projectDir/src/generated"
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    compile group: 'io.grpc', name: 'grpc-protobuf', version: '1.22.1'
+    compile group: 'io.grpc', name: 'grpc-stub', version: '1.22.1'
+    compile group: 'io.grpc', name: 'grpc-netty', version: '1.22.1'
+    // https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java
+    compile group: 'com.google.protobuf', name: 'protobuf-java', version: '3.8.0'
+
+
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["src/main/java/", "src/generated/main/grpc/", "src/generated/main/java/"]
+        }
+    }
+    test {
+        java {
+            srcDirs = ["src/test/"]
+        }
+    }
+}
+
+clean {
+    delete "$projectDir/src/generated"
+}
