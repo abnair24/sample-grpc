@@ -4,7 +4,7 @@ import com.proto.greet.GreetRequest;
 import com.proto.greet.GreetResponse;
 import com.proto.greet.GreetServiceGrpc;
 import com.proto.greet.Greeting;
-import com.proto.sample.SampleServiceGrpc;
+
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
@@ -14,6 +14,7 @@ public class GreetingUnaryClient {
         System.out.println("Starting client ");
 
         ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost",50051)
+                .intercept()
                 //SSL deactivate for dev setup`
                 .usePlaintext()
                 .build();

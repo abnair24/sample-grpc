@@ -3,6 +3,8 @@ package com.github.abnair24.grpc.greeting.server;
 import com.proto.greet.*;
 import io.grpc.stub.StreamObserver;
 
+
+
 public class GreetServiceImpl extends GreetServiceGrpc.GreetServiceImplBase {
 
     @Override
@@ -27,7 +29,7 @@ public class GreetServiceImpl extends GreetServiceGrpc.GreetServiceImplBase {
         String firstName = request.getGreeting().getFirstName();
 
         try {
-            for(int i = 0; i<= 10; i++ ) {
+            for (int i = 0; i <= 10; i++) {
                 String result = "Hello " + firstName + " - " + i;
 
                 GreetManyTimesResponse response = GreetManyTimesResponse.newBuilder()
@@ -37,11 +39,47 @@ public class GreetServiceImpl extends GreetServiceGrpc.GreetServiceImplBase {
                 responseObserver.onNext(response);
                 Thread.sleep(1000);
             }
-        }catch (InterruptedException ex) {
+        } catch (InterruptedException ex) {
             ex.printStackTrace();
-        }finally {
+        } finally {
             responseObserver.onCompleted();
         }
+    }
+    /*
+    Returns streamobserver as its called async
+     */
 
+    @Override
+    public StreamObserver<LongGreetRequest> longGreet(StreamObserver<LongGreetResponse> responseObserver) {
+        StreamObserver<LongGreetRequest> requestObserver = new StreamObserver<LongGreetRequest>() {
+
+            String result = "";
+            @Override
+            public void onNext(LongGreetRequest value) {
+                result += "Hello " + value.getGreeting().getFirstName();
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+
+            @Override
+            public void onCompleted() {
+
+                //return response when client is done
+
+                responseObserver
+                        .onNext(LongGreetResponse
+                                .newBuilder()
+                                .setResult(result)
+                                .build()
+                        );
+
+                responseObserver.onCompleted();
+            }
+        };
+
+        return requestObserver;
     }
 }
