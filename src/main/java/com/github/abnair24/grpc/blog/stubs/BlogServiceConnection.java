@@ -14,7 +14,8 @@ public class BlogServiceConnection {
     public BlogServiceConnection() {
         log.info("Creating stub");
 
-        managedChannel = ManagedChannelBuilder.forAddress("localhost", 50055)
+        managedChannel = ManagedChannelBuilder
+                .forAddress("localhost", 50050)
                 .usePlaintext()
                 .build();
         blockingStub = BlogServiceGrpc.newBlockingStub(managedChannel);
@@ -24,7 +25,16 @@ public class BlogServiceConnection {
         return blockingStub;
     }
 
-    public void close() {
+    private void close() {
+        log.info("Closing down channel");
         managedChannel.shutdown();
+    }
+
+    public void shutdown() {
+        if (managedChannel.isShutdown()) {
+            log.info("Channel shutdown");
+        } else {
+            close();
+        }
     }
 }

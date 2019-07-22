@@ -13,8 +13,8 @@ public class GreetingUnaryClient {
     public static void main(String[] args) {
         System.out.println("Starting client ");
 
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost",50051)
-                .intercept()
+        ManagedChannel channel = ManagedChannelBuilder
+                .forAddress("localhost",50051)
                 //SSL deactivate for dev setup`
                 .usePlaintext()
                 .build();
