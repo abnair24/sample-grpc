@@ -16,7 +16,6 @@ package com.github.abnair24.grpc.bidirectionalStreaming;/*
 
 import com.github.abnair24.grpc.blog.server.BlogServiceImpl;
 import com.github.abnair24.grpc.clientStreaming.CalculatorServiceImpl;
-import com.github.abnair24.grpc.clientStreaming.MetricsServiceImpl;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
@@ -30,7 +29,6 @@ public class ChatServer {
     Server server = ServerBuilder.forPort(50050)
             .addService(new com.example.grpc.chat.ChatServiceImpl())
             .addService(new BlogServiceImpl())
-            .addService(new MetricsServiceImpl())
             .addService(new CalculatorServiceImpl())
             .build();
 
