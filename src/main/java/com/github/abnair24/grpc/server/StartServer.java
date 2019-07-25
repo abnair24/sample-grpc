@@ -1,7 +1,7 @@
 package com.github.abnair24.grpc.server;
 
 import com.github.abnair24.grpc.blog.server.BlogServiceImpl;
-import com.github.abnair24.grpc.clientStreaming.CalculatorServiceImpl;
+import com.github.abnair24.grpc.calculator.CalculatorServiceImpl;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
