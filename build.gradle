@@ -50,6 +50,9 @@ dependencies {
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-core
     compile group: 'ch.qos.logback', name: 'logback-core', version: '1.3.0-alpha4'
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.3.0-alpha4'
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '2.0.0-alpha0'
+
 }
 
 sourceSets {
