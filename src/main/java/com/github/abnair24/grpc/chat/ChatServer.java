@@ -1,18 +1,4 @@
-package com.github.abnair24.grpc.chat;/*
- * Copyright 2016 Google, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+package com.github.abnair24.grpc.chat;
 
 import com.github.abnair24.grpc.blog.server.BlogServiceImpl;
 import com.github.abnair24.grpc.calculator.CalculatorServiceImpl;
@@ -21,18 +7,21 @@ import io.grpc.ServerBuilder;
 
 import java.io.IOException;
 
-/**
- * Created by rayt on 5/16/16.
- */
 public class ChatServer {
   public static void main(String[] args) throws InterruptedException, IOException {
     Server server = ServerBuilder.forPort(50050)
-            .addService(new com.example.grpc.chat.ChatServiceImpl())
+            .addService(new ChatServiceImpl())
             .addService(new BlogServiceImpl())
             .addService(new CalculatorServiceImpl())
             .build();
 
     server.start();
+    Runtime.getRuntime().addShutdownHook( new Thread ( () -> {
+      System.out.println("Received Shutdown Server");
+      server.shutdown();
+      System.out.println("Succesfully Shutdown Server");
+    }));
+
     server.awaitTermination();
   }
 }
