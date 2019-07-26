@@ -1,4 +1,4 @@
-package com.github.abnair24.grpc.calculator;
+package com.github.abnair24.grpc.calculator.server;
 
 import com.proto.calculator.*;
 import io.grpc.Status;

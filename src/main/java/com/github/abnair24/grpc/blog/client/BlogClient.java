@@ -1,5 +1,6 @@
 package com.github.abnair24.grpc.blog.client;
 
+import com.github.abnair24.grpc.BaseClient;
 import com.github.abnair24.grpc.blog.stubs.BlogServiceConnection;
 import com.proto.blog.*;
 import lombok.extern.slf4j.Slf4j;

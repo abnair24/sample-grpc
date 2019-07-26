@@ -1,4 +1,4 @@
-package com.github.abnair24.grpc.blog.client;
+package com.github.abnair24.grpc;
 
 public abstract class BaseClient {
 

@@ -1,4 +1,4 @@
-package com.github.abnair24.grpc.server;
+package com.github.abnair24.grpc.calculator.server;
 
 import com.github.abnair24.grpc.calculator.server.CalculatorServiceImpl;
 import io.grpc.Server;
