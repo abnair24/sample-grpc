@@ -1,5 +1,5 @@
 
-package com.github.abnair24.grpc.chat;
+package com.github.abnair24.grpc.server;
 
 import com.google.protobuf.Timestamp;
 import com.proto.chat.ChatMessage;

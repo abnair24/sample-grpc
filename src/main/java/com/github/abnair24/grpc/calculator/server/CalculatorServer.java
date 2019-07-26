@@ -1,5 +1,6 @@
-package com.github.abnair24.grpc.calculator;
+package com.github.abnair24.grpc.server;
 
+import com.github.abnair24.grpc.calculator.server.CalculatorServiceImpl;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import java.io.IOException;

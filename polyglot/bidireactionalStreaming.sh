@@ -5,4 +5,4 @@ echo '{"from": "Aswathy","message": "Hello"} \n\n {"from": "Amar","message": "He
   --proto_discovery_root=../src/main/proto \
   call \
   --endpoint=localhost:50050 \
-  --full_method=com.example.grpc.chat.ChatService/chat
+  --full_method=chat.ChatService/chat
