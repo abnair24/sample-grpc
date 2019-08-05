@@ -14,7 +14,7 @@ public class StartServer {
     public static void main(String[] args) throws InterruptedException, IOException {
         Server server = ServerBuilder.forPort(50050)
                 .addService(new ChatServiceImpl())
-                .addService(new BlogServiceImpl())
+//                .addService(new BlogServiceImpl())
                 .addService(new CalculatorServiceImpl())
                 .build();
 
