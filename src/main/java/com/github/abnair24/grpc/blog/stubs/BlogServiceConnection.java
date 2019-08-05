@@ -3,6 +3,8 @@ package com.github.abnair24.grpc.blog.stubs;
 import com.proto.blog.BlogServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.reflection.v1alpha.ServerReflectionGrpc;
+import io.grpc.reflection.v1alpha.ServerReflectionRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -12,12 +14,15 @@ public class BlogServiceConnection {
     private BlogServiceGrpc.BlogServiceBlockingStub blockingStub;
 
     public BlogServiceConnection() {
-        log.info("Creating stub");
+        System.out.println("Creating stub");
 
         managedChannel = ManagedChannelBuilder
                 .forAddress("localhost", 50050)
                 .usePlaintext()
                 .build();
+
+
+
         blockingStub = BlogServiceGrpc.newBlockingStub(managedChannel);
     }
 
@@ -26,13 +31,13 @@ public class BlogServiceConnection {
     }
 
     private void close() {
-        log.info("Closing down channel");
+        System.out.println("Closing down channel");
         managedChannel.shutdown();
     }
 
     public void shutdown() {
         if (managedChannel.isShutdown()) {
-            log.info("Channel shutdown");
+            System.out.println("Channel shutdown");
         } else {
             close();
         }

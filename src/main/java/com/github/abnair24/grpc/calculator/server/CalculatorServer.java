@@ -1,6 +1,5 @@
 package com.github.abnair24.grpc.calculator.server;
 
-import com.github.abnair24.grpc.calculator.server.CalculatorServiceImpl;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import java.io.IOException;
@@ -9,7 +8,6 @@ public class CalculatorServer {
     public static void main(String[] args) throws IOException, InterruptedException {
         Server server = ServerBuilder.forPort(50052)
                 .addService(new CalculatorServiceImpl())
-//                .addService(ProtoReflectionService.newInstance()) // for reflection
                 .build();
 
         server.start();

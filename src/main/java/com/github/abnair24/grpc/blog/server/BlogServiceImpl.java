@@ -8,13 +8,12 @@ import com.mongodb.client.result.DeleteResult;
 import com.proto.blog.*;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
-import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import static com.mongodb.client.model.Filters.eq;
 
-@Slf4j
+
 public class BlogServiceImpl extends BlogServiceGrpc.BlogServiceImplBase {
 
     private MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
@@ -23,18 +22,18 @@ public class BlogServiceImpl extends BlogServiceGrpc.BlogServiceImplBase {
 
     @Override
     public void createBlog(CreateBlogRequest request, StreamObserver<CreateBlogResponse> responseObserver) {
-        log.info("Creating blog :");
+        System.out.println("Creating blog :");
 
         Blog blog = request.getBlog();
         Document document = new Document("author_id",blog.getAuthorId())
                 .append("title",blog.getTitle())
                 .append("content",blog.getContent());
 
-        log.info("Inserting blog : {}",blog.getTitle());
+        System.out.println("Inserting blog : {}"+blog.getTitle());
         mongoCollection.insertOne(document);
 
         String id = document.getObjectId("_id").toString();
-        log.info("Inserted blog : {}",blog.getTitle(),id);
+        System.out.println("Inserted blog : {}"+blog.getTitle());
 
 
         CreateBlogResponse createBlogResponse = CreateBlogResponse.newBuilder()
@@ -50,22 +49,22 @@ public class BlogServiceImpl extends BlogServiceGrpc.BlogServiceImplBase {
 
     @Override
     public void readBlog(ReadBlogRequest request, StreamObserver<ReadBlogResponse> responseObserver) {
-        log.info("Reading blog :");
+        System.out.println("Reading blog :");
 
         String blogId = request.getBlogId();
 
-        log.info("Searching blog with Id :{}",blogId);
+        System.out.println("Searching blog with Id :{}"+blogId);
 
         Document result = mongoCollection.find(eq("_id",new ObjectId(blogId)))
                     .first();
 
         if(result == null) {
-            log.info("Not found the blog :{}",blogId);
+            System.out.println("Not found the blog :{}"+blogId);
             responseObserver.onError(Status.NOT_FOUND
             .withDescription("blog not found")
             .asRuntimeException());
         } else {
-            log.info("Found blog..");
+            System.out.println("Found blog..");
             Blog blog = Blog.newBuilder()
                     .setAuthorId(result.getString("author_id"))
                     .setTitle(result.getString("title"))
@@ -88,18 +87,18 @@ public class BlogServiceImpl extends BlogServiceGrpc.BlogServiceImplBase {
     @Override
     public void updateBlog(UpdateBlogRequest request, StreamObserver<UpdateBlogResponse> responseObserver) {
 
-        log.info("Updating blog");
+        System.out.println("Updating blog");
 
         Blog blog = request.getBlog();
         String blogId = blog.getId();
 
-        log.info("Searching the blog to update");
+        System.out.println("Searching the blog to update");
 
         Document result = mongoCollection.find(eq("_id",new ObjectId(blogId)))
                 .first();
 
         if(result == null){
-            log.info("Blog not found to update : {}",blogId);
+            System.out.println("Blog not found to update : {}"+blogId);
             responseObserver.onError(Status.NOT_FOUND
             .withDescription("Blog not found")
             .asRuntimeException());
@@ -111,7 +110,7 @@ public class BlogServiceImpl extends BlogServiceGrpc.BlogServiceImplBase {
 
             mongoCollection.replaceOne(eq("_id",result.getObjectId("_id")),updateDocument);
 
-            log.info("Updated the content of blog : {}",blogId);
+            System.out.println("Updated the content of blog : {}"+blogId);
 
             Blog updateBlog= Blog.newBuilder()
                     .setAuthorId(updateDocument.getString("author_id"))
@@ -130,26 +129,24 @@ public class BlogServiceImpl extends BlogServiceGrpc.BlogServiceImplBase {
 
             responseObserver.onCompleted();
         }
-
     }
 
     @Override
     public void deleteBlog(DeleteBlogRequest request, StreamObserver<DeleteBlogResponse> responseObserver) {
-        log.info("Deleting blog");
+
+        System.out.println("Deleting blog");
 
         String blogId = request.getBlogId();
 
         DeleteResult result = mongoCollection.deleteOne(eq("_id",new ObjectId(blogId)));
 
         if(result.getDeletedCount() == 0) {
-            log.info("Blog to be deleted not found : {}",blogId);
+            System.out.println("Blog to be deleted not found : {}"+blogId);
             responseObserver.onError(Status.NOT_FOUND
             .withDescription("Blog not found to delete")
             .asRuntimeException());
         } else {
-            log.info("Blog deleted ");
-
-
+            System.out.println("Blog deleted ");
 
             DeleteBlogResponse deleteBlogResponse = DeleteBlogResponse
                     .newBuilder()
@@ -164,7 +161,7 @@ public class BlogServiceImpl extends BlogServiceGrpc.BlogServiceImplBase {
 
     @Override
     public void listBlog(ListBlogRequest request, StreamObserver<ListBlogResponse> responseObserver) {
-        log.info("Listing all the blogs");
+        System.out.println("Listing all the blogs");
 
         mongoCollection
                 .find()

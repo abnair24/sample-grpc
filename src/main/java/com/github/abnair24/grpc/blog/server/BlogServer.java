@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
-@Slf4j
 public class BlogServer {
 
     public static void main(String[] args) throws InterruptedException, IOException {
@@ -15,13 +14,13 @@ public class BlogServer {
                 .addService(new BlogServiceImpl())
                 .build();
 
-        log.info("Starting server at : {}",port);
+        System.out.println("Starting server at : {}"+port);
         server.start();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            log.info("Shutting down server at : {}",port);
+            System.out.println("Shutting down server at : {}"+port);
             server.shutdown();
-            log.info("Server shutdown completed at : {}",port);
+            System.out.println("Server shutdown completed at : {}"+port);
         }));
 
         server.awaitTermination();
