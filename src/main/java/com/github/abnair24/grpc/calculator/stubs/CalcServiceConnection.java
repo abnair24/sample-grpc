@@ -8,18 +8,25 @@ import io.grpc.ManagedChannelBuilder;
 public class CalcServiceConnection {
 
     private ManagedChannel managedChannel;
-    private CalculatorServiceGrpc.CalculatorServiceStub calcStub;
+    private CalculatorServiceGrpc.CalculatorServiceBlockingStub calcBlockingStub;
+    private CalculatorServiceGrpc.CalculatorServiceStub calcNonBlockingStub;
 
     public CalcServiceConnection() {
         managedChannel = ManagedChannelBuilder
                 .forAddress("localhost", 50050)
                 .usePlaintext()
                 .build();
-        calcStub = CalculatorServiceGrpc.newStub(managedChannel);
+        calcBlockingStub = CalculatorServiceGrpc.newBlockingStub(managedChannel);
+        calcNonBlockingStub= CalculatorServiceGrpc.newStub(managedChannel);
+
     }
 
-    public  CalculatorServiceGrpc.CalculatorServiceStub getConnection() {
-        return calcStub;
+    public  CalculatorServiceGrpc.CalculatorServiceBlockingStub getBlockingConnection() {
+        return calcBlockingStub;
+    }
+
+    public CalculatorServiceGrpc.CalculatorServiceStub getNonBlockingConnection(){
+        return calcNonBlockingStub;
     }
 
     private void close() {
