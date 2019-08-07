@@ -3,9 +3,7 @@ package com.github.abnair24.grpc.blog.stubs;
 import com.proto.blog.BlogServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import io.grpc.reflection.v1alpha.ServerReflectionGrpc;
-import io.grpc.reflection.v1alpha.ServerReflectionRequest;
-import lombok.extern.slf4j.Slf4j;
+
 public class BlogServiceConnection {
 
     private ManagedChannel managedChannel;

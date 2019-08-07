@@ -1,6 +1,7 @@
 package com.github.abnair24.grpc.blog.server;
 
 import com.mongodb.client.MongoClient;
+
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -10,20 +11,40 @@ import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.wait.strategy.HttpWaitStrategy;
+
+import java.time.Duration;
 
 import static com.mongodb.client.model.Filters.eq;
+import static java.net.HttpURLConnection.HTTP_OK;
+import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 
 
 public class BlogServiceImpl extends BlogServiceGrpc.BlogServiceImplBase {
 
-    private MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
-    private MongoDatabase mongoDatabase = mongoClient.getDatabase("testdb");
-    private MongoCollection<Document>mongoCollection = mongoDatabase.getCollection("blog");
+    public  GenericContainer mongo= null;
+    private MongoClient mongoClient = null;
+    private MongoDatabase mongoDatabase = null;
+    private MongoCollection<Document>mongoCollection = null;
+
+    public BlogServiceImpl() {
+        mongo = new GenericContainer("mongo:latest")
+                .withExposedPorts(27017)
+                .waitingFor(new HttpWaitStrategy()
+                        .forPort(27017)
+                        .forStatusCodeMatching(r -> r == HTTP_OK || r == HTTP_UNAUTHORIZED))
+                .withStartupTimeout(Duration.ofMinutes(1));
+        mongo.start();
+
+        mongoClient = MongoClients.create("mongodb://"+mongo.getContainerIpAddress()+ ":"+ mongo.getMappedPort(27017));
+        mongoDatabase = mongoClient.getDatabase("testdb");
+        mongoCollection = mongoDatabase.getCollection("blog");
+    }
 
     @Override
     public void createBlog(CreateBlogRequest request, StreamObserver<CreateBlogResponse> responseObserver) {
         System.out.println("Creating blog :");
-
         Blog blog = request.getBlog();
         Document document = new Document("author_id",blog.getAuthorId())
                 .append("title",blog.getTitle())
